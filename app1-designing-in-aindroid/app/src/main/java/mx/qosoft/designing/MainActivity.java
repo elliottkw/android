@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Access to second activity and send a string.
                 Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                intent.putExtra("greeter2", GREETER);
+                intent.putExtra("greeter", GREETER);
                 startActivity(intent);
             }
         });
