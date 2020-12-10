@@ -2,12 +2,16 @@ package mx.qosoft.designing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SecondActivity extends AppCompatActivity {
     private TextView textViewMain;
+    private Button buttonGoSharing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +19,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         textViewMain = findViewById(R.id.textViewMain);
+        buttonGoSharing = findViewById(R.id.buttonGoSharing);
 
         // Take the data of intent.
         Bundle bundle = getIntent().getExtras();
@@ -25,5 +30,13 @@ public class SecondActivity extends AppCompatActivity {
         } else {
             Toast.makeText(SecondActivity.this, "It is empty!", Toast.LENGTH_LONG).show();
         }
+
+        buttonGoSharing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
