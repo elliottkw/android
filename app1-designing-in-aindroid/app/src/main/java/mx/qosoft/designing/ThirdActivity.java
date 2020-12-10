@@ -38,13 +38,15 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String phoneNumber = editTextPhone.getText().toString();
-                if(phoneNumber != null) {
+                if(phoneNumber != null && !phoneNumber.isEmpty()) {
                     // Check actual version of android with we have execute.
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PHONE_CALL_CODE);
                     } else {
                         OlderVersions(phoneNumber);
                     }
+                } else {
+                    Toast.makeText(ThirdActivity.this, "Insert a phone number", Toast.LENGTH_SHORT).show();
                 }
             }
 
