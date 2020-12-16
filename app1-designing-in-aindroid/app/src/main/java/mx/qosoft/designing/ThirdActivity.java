@@ -2,6 +2,7 @@ package mx.qosoft.designing;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,7 +43,28 @@ public class ThirdActivity extends AppCompatActivity {
                 if(phoneNumber != null && !phoneNumber.isEmpty()) {
                     // Check actual version of android with we have execute.
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PHONE_CALL_CODE);
+                        // Check if accept, not accept, or never ask it.
+                        if(CheckPermission(Manifest.permission.CALL_PHONE)) {
+                            // Accept
+                            Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel.:"+phoneNumber));
+                            startActivity(i);
+                            if(ActivityCompat.checkSelfPermission(ThirdActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) return;
+                        } else {
+                            // Deny or its the first time ask
+                            if (!shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
+                                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PHONE_CALL_CODE);
+                            } else {
+                                // Deny
+                                Toast.makeText(ThirdActivity.this, "Please, enable the request permission", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                i.addCategory(Intent.CATEGORY_DEFAULT);
+                                i.setData(Uri.parse("package:"+getPackageName()));
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                                startActivity(i);
+                            }
+                        }
                     } else {
                         OlderVersions(phoneNumber);
                     }
@@ -75,6 +98,7 @@ public class ThirdActivity extends AppCompatActivity {
                         // Permission acepted
                         String phoneNumber = editTextPhone.getText().toString();
                         Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phoneNumber));
+                        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) return;
                         startActivity(intentCall);
                     } else {
                         // Not permission
