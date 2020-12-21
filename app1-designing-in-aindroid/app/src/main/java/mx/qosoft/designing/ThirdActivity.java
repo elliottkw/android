@@ -36,6 +36,7 @@ public class ThirdActivity extends AppCompatActivity {
         imageButtonWeb = findViewById(R.id.imageButtonWeb);
         imageButtonCamera = findViewById(R.id.imageButtonCamera);
 
+        // Button for the call
         imageButtonPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +80,21 @@ public class ThirdActivity extends AppCompatActivity {
                     startActivity(intentCall);
                 } else {
                     Toast.makeText(ThirdActivity.this, "You declined the access", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        // Button for the URL Web
+        imageButtonWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = editTextWeb.getText().toString();
+                if(url != null && !url.isEmpty()) {
+                    Intent intentWeb = new Intent();
+                    intentWeb.setAction(Intent.ACTION_VIEW);
+                    intentWeb.setData(Uri.parse("http://"+url));
+
+                    startActivity(intentWeb);
                 }
             }
         });
