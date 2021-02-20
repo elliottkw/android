@@ -89,33 +89,36 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String url = editTextWeb.getText().toString();
-                String email = "resiel";
+                String email = "resiel@gmail.com";
 
                 if(url != null && !url.isEmpty()) {
                     Intent intentWeb = new Intent();
                     intentWeb.setAction(Intent.ACTION_VIEW);
                     intentWeb.setData(Uri.parse("http://"+url));
-                    startActivity(intentWeb);
+                    //startActivity(intentWeb);
 
                     // Contacts
                     Intent intentContacts = new Intent(Intent.ACTION_VIEW, Uri.parse("content://contacts/people"));
-                    startActivity(intentContacts);
+                    //startActivity(intentContacts);
 
                     // Mail To
                     Intent intentMailTo = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"+email));
-                    startActivity(intentMailTo);
+                    //startActivity(intentMailTo);
 
                     // Mail complete
                     Intent intentMail = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
-                    intentMail.setType("plain/text");
+                    //intentMail.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+                    //intentMail.setType("plain/text");
+                    intentMail.setType("message/rfc822");
                     intentMail.putExtra(Intent.EXTRA_SUBJECT, "Mail's title");
                     intentMail.putExtra(Intent.EXTRA_TEXT, "Hi there, I love mMyForm app, but...");
                     intentMail.putExtra(Intent.EXTRA_EMAIL, new String[] {"fernando@gmail.com", "antonio@gmail.com"});
-                    startActivity(intentMail);
+                    //startActivity(intentMail);
+                    startActivity(Intent.createChooser(intentMail, "Elige cliente de correo"));
 
                     // Teléfono 2
                     Intent intentPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 9541271999"));
-                    startActivity(intentPhone);
+                    //startActivity(intentPhone);
                 }
             }
         });
