@@ -17,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Force end load icon in Action Bar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_design);
+
         buttonMain = findViewById(R.id.buttonMain);
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override

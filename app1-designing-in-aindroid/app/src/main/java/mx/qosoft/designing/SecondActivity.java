@@ -18,6 +18,9 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        // Activate Backward Arrow
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         textViewMain = findViewById(R.id.textViewMain);
         buttonGoSharing = findViewById(R.id.buttonGoSharing);
 

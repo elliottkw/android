@@ -33,6 +33,9 @@ public class ThirdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
 
+        // Activate Backward Arrow
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         editTextPhone = findViewById(R.id.editTextPhone);
         editTextWeb = findViewById(R.id.editTextWeb);
         imageButtonPhone = findViewById(R.id.imageButtonPhone);
