@@ -1,10 +1,12 @@
 package mx.qosoft.designing;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,6 +26,7 @@ public class ThirdActivity extends AppCompatActivity {
     private ImageButton imageButtonCamera;
 
     private final int PHONE_CALL_CODE = 100;
+    private final int PICTURE_FROM_CAMERA = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +109,9 @@ public class ThirdActivity extends AppCompatActivity {
                     //startActivity(intentMailTo);
 
                     // Mail complete
-                    Intent intentMail = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
+                    Intent intentMail = new Intent(Intent.ACTION_SEND, Uri.parse(email));
                     //intentMail.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                    //intentMail.setType("plain/text");
-                    intentMail.setType("message/rfc822");
+                    intentMail.setType("plain/text");
                     intentMail.putExtra(Intent.EXTRA_SUBJECT, "Mail's title");
                     intentMail.putExtra(Intent.EXTRA_TEXT, "Hi there, I love mMyForm app, but...");
                     intentMail.putExtra(Intent.EXTRA_EMAIL, new String[] {"fernando@gmail.com", "antonio@gmail.com"});
@@ -122,6 +124,31 @@ public class ThirdActivity extends AppCompatActivity {
                 }
             }
         });
+
+        imageButtonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open camera
+                Intent intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intentCamera, PICTURE_FROM_CAMERA);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case PICTURE_FROM_CAMERA:
+                if(resultCode == Activity.RESULT_OK) {
+                    String result = data.toUri(0);
+                    Toast.makeText(this, "Result: " + result, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "There was an error with the picture, try again.", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
