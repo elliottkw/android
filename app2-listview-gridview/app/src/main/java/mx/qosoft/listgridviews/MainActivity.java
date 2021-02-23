@@ -3,14 +3,18 @@ package mx.qosoft.listgridviews;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
+    private List<String> names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +24,7 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         // Data to show
-        List<String> names = new ArrayList<>();
-        names.add("Alejandro");
-        names.add("Fernando");
-        names.add("Rubén");
-        names.add("Santiago");
-        names.add("Alejandro");
-        names.add("Fernando");
-        names.add("Rubén");
-        names.add("Santiago");
+        names = new ArrayList<>();
         names.add("Alejandro");
         names.add("Fernando");
         names.add("Rubén");
@@ -39,5 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         // We link the adapter with our list view.
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Clicked: " + names.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
