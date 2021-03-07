@@ -1,8 +1,12 @@
 package mx.qosoft.listgridviews;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -15,6 +19,8 @@ import java.util.List;
 public class GridActivity extends AppCompatActivity {
     private List<String> names;
     private GridView gridView;
+    private MyAdapter myAdapter;
+    private int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +34,6 @@ public class GridActivity extends AppCompatActivity {
         names.add("Alejandro");
         names.add("Fernando");
         names.add("Rubén");
-        names.add("Santiago");
-        names.add("Alejandro");
-        names.add("Fernando");
-        names.add("Rubén");
-        names.add("Santiago");
-        names.add("Alejandro");
-        names.add("Fernando");
-        names.add("Rubén");
-        names.add("Santiago");
-        names.add("Alejandro");
-        names.add("Fernando");
-        names.add("Rubén");
-        names.add("Santiago");
 
         // Adapter, the visual way we display our data.
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
@@ -56,7 +49,29 @@ public class GridActivity extends AppCompatActivity {
         });
 
         // We link with our custom adapter.
-        MyAdapter myAdapter = new MyAdapter(this, R.layout.grid_item, names);
+        myAdapter = new MyAdapter(this, R.layout.grid_item, names);
         gridView.setAdapter(myAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_item:
+                // We add new name
+                this.names.add("Added nº"+ ++counter);
+                // We notify the adapter of the change.
+                myAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
