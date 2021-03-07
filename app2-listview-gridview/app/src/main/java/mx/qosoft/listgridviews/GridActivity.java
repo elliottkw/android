@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,8 +52,11 @@ public class GridActivity extends AppCompatActivity {
         // We link with our custom adapter.
         myAdapter = new MyAdapter(this, R.layout.grid_item, names);
         gridView.setAdapter(myAdapter);
+
+        registerForContextMenu(gridView);
     }
 
+    // Inflate the options menu layout.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -61,6 +65,7 @@ public class GridActivity extends AppCompatActivity {
         return true;
     }
 
+    // Handle events click on the options menu.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -72,6 +77,34 @@ public class GridActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Inflate the context menu layout.
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle(this.names.get(info.position));
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    // Handle events click on the context menu.
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.delete_item:
+                // Delete clicked item.
+                this.names.remove(info.position);
+                // Notify the adapter of the change.
+                myAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 }
